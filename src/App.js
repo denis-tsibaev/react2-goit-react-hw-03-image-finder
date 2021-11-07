@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
 import imageApi from './components/Api';
+import Button from './components/Button';
 import Container from './components/Container';
 import ImageGallery from './components/ImageGallery';
+import Modal from './components/Modal';
 import Searchbar from './components/Searchbar';
+import Spinner from './components/Spinner';
 
 export default class App extends Component {
     state = {
@@ -50,12 +53,53 @@ export default class App extends Component {
             });
     };
 
+    handleModalOpen = largeImage => {
+        this.setState({ modal: true, modalImage: largeImage });
+        window.addEventListener('keydown', this.handleModalEscape);
+    };
+
+    handleModalEscape = e => {
+        if (e.keyCode === 27) this.resetModal();
+    };
+
+    handleBackdropClick = e => {
+        if (e.target === e.currentTarget) this.resetModal();
+    };
+
+    resetModal = () => {
+        this.setState({ modal: false, modalImage: '' });
+    };
+
     render() {
-        const { hits, query } = this.state;
+        const { hits, query, modal, modalImage } = this.state;
+        const {
+            handleInputChange,
+            handleModalOpen,
+            fetchImg,
+            handleModalEscape,
+            handleBackdropClick,
+        } = this;
         return (
             <Container>
-                <Searchbar onSubmit={this.handleInputChange} />
-                {query && <ImageGallery hits={hits} />}
+                <Searchbar onSubmit={handleInputChange} />
+                {query && (
+                    <ImageGallery hits={hits} onImageClick={handleModalOpen} />
+                )}
+
+                {hits.length > 0 && (
+                    <Button onLoadClick={fetchImg} text="Load more" />
+                )}
+
+                <Spinner />
+
+                {modal && (
+                    <Modal
+                        onClose={handleModalEscape}
+                        handleBackdropClick={handleBackdropClick}
+                    >
+                        <img src={modalImage} alt="" />
+                    </Modal>
+                )}
             </Container>
         );
     }
