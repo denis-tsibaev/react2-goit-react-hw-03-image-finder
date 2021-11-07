@@ -5,13 +5,17 @@ import './Modal.scss';
 const modalRoot = document.querySelector('#modal-root');
 
 export default class Modal extends Component {
-    handleModalEscape = e => {
-        this.props.Onclose();
-    };
+    componentDidMount() {
+        window.addEventListener('keydown', this.handleModalEscape);
+    }
 
     componentWillUnmount() {
         window.removeEventListener('keydown', this.handleModalEscape);
     }
+
+    handleModalEscape = e => {
+        this.props.Onclose();
+    };
 
     render() {
         return createPortal(

@@ -47,7 +47,14 @@ export default class App extends Component {
                     behavior: 'smooth',
                 });
             })
-            .catch(error => this.setState({ error }))
+            .catch(
+                error => this.setState({ error }),
+                alert(
+                    `Oh! something wrong.
+Please, try again later.
+It looks like pixabay.com doesn't answer for the request`,
+                ),
+            )
             .finally(() => {
                 this.setState({ isLoading: false });
             });
@@ -55,7 +62,6 @@ export default class App extends Component {
 
     handleModalOpen = largeImage => {
         this.setState({ modal: true, modalImage: largeImage });
-        window.addEventListener('keydown', this.handleModalEscape);
     };
 
     handleModalEscape = e => {
