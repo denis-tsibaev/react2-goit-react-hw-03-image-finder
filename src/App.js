@@ -71,7 +71,7 @@ export default class App extends Component {
     };
 
     render() {
-        const { hits, query, modal, modalImage } = this.state;
+        const { hits, query, modal, modalImage, isLoading } = this.state;
         const {
             handleInputChange,
             handleModalOpen,
@@ -86,11 +86,11 @@ export default class App extends Component {
                     <ImageGallery hits={hits} onImageClick={handleModalOpen} />
                 )}
 
+                {isLoading && <Spinner />}
+
                 {hits.length > 0 && (
                     <Button onLoadClick={fetchImg} text="Load more" />
                 )}
-
-                <Spinner />
 
                 {modal && (
                     <Modal

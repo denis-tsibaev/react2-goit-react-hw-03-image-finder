@@ -1,4 +1,5 @@
 import '../../styles.css';
+import PropTypes from 'prop-types';
 
 const ImageGalleryItem = ({ src, alt, largeImage, onImageClick }) => (
     <img
@@ -10,5 +11,12 @@ const ImageGalleryItem = ({ src, alt, largeImage, onImageClick }) => (
         className="ImageGalleryItem-image"
     />
 );
+
+ImageGalleryItem.propTypes = {
+    src: PropTypes.string.isRequired,
+    alt: PropTypes.string.isRequired,
+    largeImage: PropTypes.string.isRequired,
+    onImageClick: PropTypes.func,
+};
 
 export default ImageGalleryItem;
