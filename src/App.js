@@ -6,6 +6,7 @@ import ImageGallery from './components/ImageGallery';
 import Modal from './components/Modal';
 import Searchbar from './components/Searchbar';
 import Spinner from './components/Spinner';
+import { mapper } from './components/helpers/mapper';
 
 export default class App extends Component {
     state = {
@@ -38,7 +39,8 @@ export default class App extends Component {
         imageApi(option)
             .then(result => {
                 this.setState(prevState => ({
-                    hits: [...prevState.hits, ...result],
+                    // hits: [...prevState.hits, ...result],
+                    hits: [...prevState.hits, ...mapper(result)],
                     currentPage: prevState.currentPage + 1,
                 }));
 
