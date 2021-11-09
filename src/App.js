@@ -51,6 +51,7 @@ export default class App extends Component {
             })
             .catch(
                 error => this.setState({ error }),
+                console.log(this.state.error),
                 alert(
                     `Oh! something wrong.
 Please, try again later.
