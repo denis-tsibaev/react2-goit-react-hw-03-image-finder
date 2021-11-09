@@ -2,11 +2,11 @@ import React, { Component } from 'react';
 import imageApi from './components/Api';
 import Button from './components/Button';
 import Container from './components/Container';
+import { mapper } from './components/helpers/mapper';
 import ImageGallery from './components/ImageGallery';
 import Modal from './components/Modal';
 import Searchbar from './components/Searchbar';
 import Spinner from './components/Spinner';
-import { mapper } from './components/helpers/mapper';
 
 export default class App extends Component {
     state = {
@@ -49,21 +49,14 @@ export default class App extends Component {
                     behavior: 'smooth',
                 });
             })
-            .catch(
-                error => this.setState({ error }),
-                console.log(this.state.error),
-                alert(
-                    `Oh! something wrong.
-Please, try again later.
-It looks like pixabay.com doesn't answer for the request`,
-                ),
-            )
+            .catch(error => this.setState({ error }))
             .finally(() => {
                 this.setState({ isLoading: false });
             });
     };
 
     handleModalOpen = largeImage => {
+        window.addEventListener('keydown', this.handleModalEscape);
         this.setState({ modal: true, modalImage: largeImage });
     };
 
@@ -88,6 +81,7 @@ It looks like pixabay.com doesn't answer for the request`,
             handleModalEscape,
             handleBackdropClick,
         } = this;
+
         return (
             <Container>
                 <Searchbar onSubmit={handleInputChange} />
@@ -103,7 +97,7 @@ It looks like pixabay.com doesn't answer for the request`,
 
                 {modal && (
                     <Modal
-                        onClose={handleModalEscape}
+                        modalClose={handleModalEscape}
                         handleBackdropClick={handleBackdropClick}
                     >
                         <img src={modalImage} alt="" />
