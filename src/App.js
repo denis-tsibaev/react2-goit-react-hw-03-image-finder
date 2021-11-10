@@ -20,8 +20,13 @@ export default class App extends Component {
     };
 
     componentDidUpdate(prevProps, prevState) {
-        if (prevState.query !== this.state.query) {
+        const { currentPage, query } = this.state;
+
+        if (prevState.query !== query) {
             this.fetchImg();
+        }
+        if (prevState.currentPage !== currentPage) {
+            this.fetchImg(currentPage);
         }
     }
 
@@ -39,9 +44,7 @@ export default class App extends Component {
         imageApi(option)
             .then(result => {
                 this.setState(prevState => ({
-                    // hits: [...prevState.hits, ...result],
                     hits: [...prevState.hits, ...mapper(result)],
-                    currentPage: prevState.currentPage + 1,
                 }));
 
                 window.scrollTo({
@@ -55,8 +58,13 @@ export default class App extends Component {
             });
     };
 
+    loadMore = () => {
+        let { currentPage } = this.state;
+        currentPage += 1;
+        this.setState({ currentPage });
+    };
+
     handleModalOpen = largeImage => {
-        window.addEventListener('keydown', this.handleModalEscape);
         this.setState({ modal: true, modalImage: largeImage });
     };
 
@@ -70,6 +78,7 @@ export default class App extends Component {
 
     resetModal = () => {
         this.setState({ modal: false, modalImage: '' });
+        window.removeEventListener('keydown', this.handleModalEscape);
     };
 
     render() {
@@ -77,9 +86,9 @@ export default class App extends Component {
         const {
             handleInputChange,
             handleModalOpen,
-            fetchImg,
             handleModalEscape,
             handleBackdropClick,
+            loadMore,
         } = this;
 
         return (
@@ -92,7 +101,7 @@ export default class App extends Component {
                 {isLoading && <Spinner />}
 
                 {hits.length > 0 && (
-                    <Button onLoadClick={fetchImg} text="Load more" />
+                    <Button onLoadClick={loadMore} text="Load more" />
                 )}
 
                 {modal && (

@@ -16,7 +16,7 @@ ImageGalleryItem.propTypes = {
     src: PropTypes.string.isRequired,
     alt: PropTypes.string.isRequired,
     largeImage: PropTypes.string.isRequired,
-    onImageClick: PropTypes.func,
+    onImageClick: PropTypes.func.isRequired,
 };
 
 export default ImageGalleryItem;

@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import '../../styles.css';
 
@@ -37,4 +38,7 @@ export default class Searchbar extends Component {
             </header>
         );
     }
+    static propTypes = {
+        handleSubmit: PropTypes.func,
+    };
 }
