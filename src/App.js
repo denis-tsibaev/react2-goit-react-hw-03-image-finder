@@ -68,28 +68,14 @@ export default class App extends Component {
         this.setState({ modal: true, modalImage: largeImage });
     };
 
-    handleModalEscape = e => {
-        if (e.keyCode === 27) this.resetModal();
-    };
-
-    handleBackdropClick = e => {
-        if (e.target === e.currentTarget) this.resetModal();
-    };
-
     resetModal = () => {
         this.setState({ modal: false, modalImage: '' });
-        window.removeEventListener('keydown', this.handleModalEscape);
     };
 
     render() {
         const { hits, query, modal, modalImage, isLoading } = this.state;
-        const {
-            handleInputChange,
-            handleModalOpen,
-            handleModalEscape,
-            handleBackdropClick,
-            loadMore,
-        } = this;
+        const { handleInputChange, handleModalOpen, resetModal, loadMore } =
+            this;
 
         return (
             <Container>
@@ -105,10 +91,7 @@ export default class App extends Component {
                 )}
 
                 {modal && (
-                    <Modal
-                        modalClose={handleModalEscape}
-                        handleBackdropClick={handleBackdropClick}
-                    >
+                    <Modal modalClose={resetModal}>
                         <img src={modalImage} alt="" />
                     </Modal>
                 )}

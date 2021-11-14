@@ -10,17 +10,25 @@ export default class Modal extends Component {
         window.addEventListener('keydown', this.handleModalEscape);
     }
 
-    // componentWillUnmount() {
-    //     window.removeEventListener('keydown', this.handleModalEscape);
-    // }
+    componentWillUnmount() {
+        window.removeEventListener('keydown', this.handleModalEscape);
+    }
 
     handleModalEscape = e => {
+        if (e.keyCode === 27) this.resetModal();
+    };
+
+    handleBackdropClick = e => {
+        if (e.target === e.currentTarget) this.resetModal();
+    };
+
+    resetModal = e => {
         this.props.modalClose(e);
     };
 
     render() {
         return createPortal(
-            <div className="Overlay" onClick={this.props.handleBackdropClick}>
+            <div className="Overlay" onClick={this.handleBackdropClick}>
                 <div className="Modal">{this.props.children}</div>
             </div>,
             modalRoot,
@@ -28,7 +36,7 @@ export default class Modal extends Component {
     }
 
     static propTypes = {
-        handleBackdropClick: PropTypes.func.isRequired,
+        modalClose: PropTypes.func.isRequired,
         children: PropTypes.node,
     };
 }
